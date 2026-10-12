@@ -3,13 +3,21 @@
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: #0B0A0F;
-    color: #FFF7FB;
+    background-color: #030204;
+    color: #FFF5F5;
     overflow-x: hidden;
   }
 
+  .font-royal {
+    font-family: 'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  }
+
+  .font-cinzel {
+    font-family: 'Cinzel', Georgia, serif;
+  }
+
   h1, h2, h3, .font-luxury {
-    font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+    font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   }
 
   .font-poetic {
@@ -26,18 +34,27 @@
   }
 }
 
-@keyframes pulse-glow-rose {
+@keyframes pulse-ruby-glow {
   0%, 100% {
-    opacity: 0.5;
-    filter: drop-shadow(0 0 12px rgba(225, 69, 142, 0.4));
+    opacity: 0.6;
+    filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.45));
   }
   50% {
-    opacity: 0.9;
-    filter: drop-shadow(0 0 28px rgba(246, 164, 200, 0.8));
+    opacity: 1;
+    filter: drop-shadow(0 0 35px rgba(255, 23, 68, 0.9));
   }
 }
 
-@keyframes shimmer-gold-rose {
+@keyframes shimmer-ruby {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes shimmer-gold {
   0% {
     background-position: -200% 0;
   }
@@ -50,48 +67,70 @@
   animation: float-subtle 4.5s ease-in-out infinite;
 }
 
-.animate-pulse-clean {
-  animation: pulse-glow-rose 3s ease-in-out infinite;
+.animate-pulse-ruby {
+  animation: pulse-ruby-glow 3s ease-in-out infinite;
 }
 
-.text-shimmer-rose {
+.text-shimmer-ruby {
   background: linear-gradient(
     90deg,
-    #FFF7FB 0%,
-    #F6A4C8 25%,
-    #E1458E 50%,
-    #F6A4C8 75%,
-    #FFF7FB 100%
+    #FFFFFF 0%,
+    #FECACA 25%,
+    #EF4444 50%,
+    #FF1744 75%,
+    #FFFFFF 100%
   );
   background-size: 200% auto;
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
-  animation: shimmer-gold-rose 5s linear infinite;
+  animation: shimmer-ruby 4.5s linear infinite;
 }
 
-/* Luxury Glassmorphism & Framing */
-.glass-clean-card {
-  background: rgba(142, 27, 82, 0.12);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(246, 164, 200, 0.22);
-}
-
-.glass-clean-pill {
-  background: rgba(11, 10, 15, 0.7);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(246, 164, 200, 0.18);
-}
-
-.rose-radial-bg {
-  background: radial-gradient(
-    circle at 50% 30%,
-    rgba(142, 27, 82, 0.35) 0%,
-    rgba(11, 10, 15, 0.95) 70%,
-    #0B0A0F 100%
+.text-shimmer-gold {
+  background: linear-gradient(
+    90deg,
+    #FDE047 0%,
+    #F59E0B 30%,
+    #FFFFFF 50%,
+    #D97706 70%,
+    #FDE047 100%
   );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer-gold 5s linear infinite;
 }
 
+/* Luxury Obsidian & Brilliant Red Glassmorphism */
+.glass-obsidian-card {
+  background: linear-gradient(
+    145deg,
+    rgba(220, 38, 38, 0.12) 0%,
+    rgba(10, 5, 8, 0.94) 50%,
+    rgba(153, 27, 27, 0.16) 100%
+  );
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 35px rgba(220, 38, 38, 0.22);
+}
 
+.glass-obsidian-pill {
+  background: rgba(15, 8, 12, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.ruby-radial-bg {
+  background-color: #030204;
+  background-image: 
+    radial-gradient(ellipse 90% 60% at 50% 12%, rgba(220, 38, 38, 0.26) 0%, transparent 65%),
+    radial-gradient(ellipse 80% 50% at 50% 85%, rgba(185, 28, 28, 0.18) 0%, transparent 60%);
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}

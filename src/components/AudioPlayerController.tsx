@@ -264,18 +264,18 @@ export const AudioPlayerController: React.FC<AudioPlayerControllerProps> = ({
       {shouldPlay && (
         <div className="fixed top-4 right-4 z-40 flex items-center gap-2">
           {/* Audio Badge & Toggle */}
-          <div className="glass-clean-pill rounded-full px-3 py-1.5 flex items-center gap-2.5 shadow-xl border border-[#F6A4C8]/25">
+          <div className="glass-obsidian-pill rounded-full px-3.5 py-1.5 flex items-center gap-2.5 shadow-2xl border border-red-500/40">
             {/* Animated equalizer bars */}
             <div className="flex items-center gap-0.5 h-3.5">
-              <span className={`w-0.5 bg-[#F6A4C8] rounded-full transition-all ${isPlaying ? 'h-3.5 animate-pulse' : 'h-1'}`} />
-              <span className={`w-0.5 bg-[#E1458E] rounded-full transition-all ${isPlaying ? 'h-2 animate-bounce' : 'h-1'}`} />
-              <span className={`w-0.5 bg-[#FFF7FB] rounded-full transition-all ${isPlaying ? 'h-4 animate-pulse' : 'h-1'}`} />
+              <span className={`w-0.5 bg-[#FF1744] rounded-full transition-all ${isPlaying ? 'h-3.5 animate-pulse' : 'h-1'}`} />
+              <span className={`w-0.5 bg-[#EF4444] rounded-full transition-all ${isPlaying ? 'h-2 animate-bounce' : 'h-1'}`} />
+              <span className={`w-0.5 bg-[#F59E0B] rounded-full transition-all ${isPlaying ? 'h-4 animate-pulse' : 'h-1'}`} />
             </div>
 
             {/* Play/Pause */}
             <button
               onClick={handleTogglePlay}
-              className="p-1 rounded-full text-[#F6A4C8] hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+              className="p-1 rounded-full text-[#EF4444] hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
               title={isPlaying ? 'Pausar áudio' : 'Reproduzir áudio'}
               aria-label={isPlaying ? 'Pausar música' : 'Tocar música'}
             >
@@ -285,7 +285,7 @@ export const AudioPlayerController: React.FC<AudioPlayerControllerProps> = ({
             {/* Mute */}
             <button
               onClick={handleToggleMute}
-              className="p-1 rounded-full text-[#F6A4C8] hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+              className="p-1 rounded-full text-[#EF4444] hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
               title={isMuted ? 'Ativar som' : 'Silenciar'}
               aria-label={isMuted ? 'Ativar som' : 'Silenciar áudio'}
             >
@@ -295,17 +295,17 @@ export const AudioPlayerController: React.FC<AudioPlayerControllerProps> = ({
             {/* Controls Drawer Toggle */}
             <button
               onClick={() => setShowControls(!showControls)}
-              className="text-[11px] font-medium text-[#F6A4C8]/90 hover:text-white flex items-center gap-1 transition-colors pl-1 cursor-pointer"
+              className="text-[11px] font-medium text-red-300 hover:text-white flex items-center gap-1.5 transition-colors pl-1 cursor-pointer font-luxury"
             >
-              <Music2 className="w-3 h-3 text-[#E1458E]" />
-              <span className="hidden sm:inline">Telemensagem</span>
+              <Music2 className="w-3.5 h-3.5 text-[#FF1744]" />
+              <span className="hidden sm:inline">Trilha Sonora</span>
             </button>
           </div>
 
           {/* Volume Dropdown */}
           {showControls && (
-            <div className="glass-clean-card rounded-2xl p-3.5 shadow-2xl flex flex-col gap-2 min-w-[170px] animate-in fade-in zoom-in-95 duration-200 border border-[#F6A4C8]/30">
-              <div className="flex items-center justify-between text-xs text-[#F6A4C8]">
+            <div className="glass-obsidian-card rounded-2xl p-3.5 shadow-2xl flex flex-col gap-2 min-w-[170px] border border-red-500/35">
+              <div className="flex items-center justify-between text-xs text-red-200 font-luxury">
                 <span>Volume</span>
                 <span>{volume}%</span>
               </div>
@@ -315,11 +315,11 @@ export const AudioPlayerController: React.FC<AudioPlayerControllerProps> = ({
                 max="100"
                 value={volume}
                 onChange={(e) => handleVolumeChange(Number(e.target.value))}
-                className="w-full accent-[#E1458E] h-1.5 bg-[#0B0A0F] rounded-lg cursor-pointer"
+                className="w-full accent-[#FF1744] h-1.5 bg-[#030204] rounded-lg cursor-pointer"
               />
-              <div className="flex items-center gap-1.5 text-[10px] text-[#F6A4C8]/70 mt-1">
-                <Radio className="w-3 h-3 text-[#E1458E]" />
-                <span>Trilha Principal Ativa</span>
+              <div className="flex items-center gap-1.5 text-[10px] text-red-400 mt-1">
+                <Radio className="w-3 h-3 text-[#FF1744]" />
+                <span>Telemensagem Oficial</span>
               </div>
             </div>
           )}

@@ -5,67 +5,72 @@ interface CinematicParticlesProps {
 }
 
 export const CinematicParticles: React.FC<CinematicParticlesProps> = ({ intensity = 'calm' }) => {
-  // Reduced, clean, tasteful particle count
+  // Tasteful particle count
   const stars = useMemo(() => {
-    return Array.from({ length: intensity === 'celebration' ? 22 : 14 }).map((_, i) => ({
+    return Array.from({ length: intensity === 'celebration' ? 24 : 14 }).map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
       size: Math.random() * 2.2 + 1.2,
       duration: Math.random() * 4 + 3,
       delay: Math.random() * 4,
-      opacity: Math.random() * 0.6 + 0.25,
+      opacity: Math.random() * 0.55 + 0.25,
+      isGold: Math.random() > 0.6,
     }));
   }, [intensity]);
 
-  const petals = useMemo(() => {
-    return Array.from({ length: intensity === 'celebration' ? 8 : 4 }).map((_, i) => ({
+  const embers = useMemo(() => {
+    return Array.from({ length: intensity === 'celebration' ? 10 : 5 }).map((_, i) => ({
       id: i,
       left: Math.random() * 100,
-      duration: Math.random() * 10 + 8,
-      delay: Math.random() * 8,
-      size: Math.random() * 9 + 8,
+      duration: Math.random() * 9 + 7,
+      delay: Math.random() * 7,
+      size: Math.random() * 4 + 3,
     }));
   }, [intensity]);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {/* Crisp, clean ambient radial illumination (Deep Black #0B0A0F + Dark Rose #8E1B52) */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_50%_15%,rgba(142,27,82,0.28),transparent_75%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_45%_at_50%_85%,rgba(225,69,142,0.15),transparent_70%)]" />
+      {/* Luxury Radial Lighting: Pure Black #030204 + Intense Radiant Ruby Red */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_55%_at_50%_10%,rgba(220,38,38,0.22),transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_65%_45%_at_50%_90%,rgba(185,28,28,0.18),transparent_65%)]" />
 
-      {/* Discrete, elegant stars */}
+      {/* Discrete ruby and golden stardust */}
       {stars.map((star) => (
         <div
           key={star.id}
-          className="absolute rounded-full bg-[#FFF7FB] transition-opacity"
+          className="absolute rounded-full transition-opacity"
           style={{
             left: `${star.x}%`,
             top: `${star.y}%`,
             width: `${star.size}px`,
             height: `${star.size}px`,
-            boxShadow: `0 0 ${star.size * 2.5}px rgba(246, 164, 200, 0.85)`,
+            backgroundColor: star.isGold ? '#FDE047' : '#FF1744',
+            boxShadow: star.isGold 
+              ? `0 0 ${star.size * 3}px rgba(245, 158, 11, 0.9)` 
+              : `0 0 ${star.size * 3}px rgba(255, 23, 68, 0.9)`,
             opacity: star.opacity,
-            animation: `pulse-glow-rose ${star.duration}s ease-in-out infinite`,
+            animation: `pulse-ruby-glow ${star.duration}s ease-in-out infinite`,
             animationDelay: `${star.delay}s`,
           }}
         />
       ))}
 
-      {/* Very subtle rose petals (Clean, slow, non-intrusive) */}
-      {petals.map((petal) => (
+      {/* Subtle floating ruby embers */}
+      {embers.map((ember) => (
         <div
-          key={petal.id}
-          className="absolute pointer-events-none opacity-40"
+          key={ember.id}
+          className="absolute pointer-events-none rounded-full"
           style={{
-            left: `${petal.left}%`,
-            top: '-5%',
-            width: `${petal.size}px`,
-            height: `${petal.size * 1.3}px`,
-            borderRadius: '60% 40% 70% 30% / 40% 60% 40% 60%',
-            background: 'linear-gradient(135deg, rgba(255, 247, 251, 0.75) 0%, rgba(246, 164, 200, 0.45) 100%)',
-            animation: `float-subtle ${petal.duration}s ease-in-out infinite`,
-            animationDelay: `${petal.delay}s`,
+            left: `${ember.left}%`,
+            bottom: '-5%',
+            width: `${ember.size}px`,
+            height: `${ember.size}px`,
+            background: 'radial-gradient(circle, #FF1744 20%, #B91C1C 70%, transparent 100%)',
+            boxShadow: '0 0 12px rgba(255, 23, 68, 0.8)',
+            animation: `float-subtle ${ember.duration}s ease-in-out infinite`,
+            animationDelay: `${ember.delay}s`,
+            opacity: 0.6,
           }}
         />
       ))}

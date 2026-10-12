@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { CAROUSEL_SLIDES } from '../data/defaultExperience';
+import { CAROUSEL_SLIDES, CarouselSlide } from '../data/defaultExperience';
 import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 
 interface ThreePhotoStageProps {
@@ -13,12 +13,10 @@ export const ThreePhotoStage: React.FC<ThreePhotoStageProps> = ({ photoUrl }) =>
   const [isPaused, setIsPaused] = useState(false);
 
   const textureCache = useRef<Record<string, THREE.Texture>>({});
-  const meshRef = useRef<THREE.Mesh | null>(null);
   const frameGroupRef = useRef<THREE.Group | null>(null);
   const mousePos = useRef({ x: 0, y: 0 });
   const isTransitioning = useRef(false);
 
-  // Auto slide every 5.5s
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
@@ -27,13 +25,12 @@ export const ThreePhotoStage: React.FC<ThreePhotoStageProps> = ({ photoUrl }) =>
     return () => clearInterval(interval);
   }, [slideIdx, isPaused]);
 
-  // Setup Three.js 3D Floating Frame
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
 
-    const width = container.clientWidth || 360;
-    const height = container.clientHeight || 360;
+    const width = container.clientWidth || 380;
+    const height = container.clientHeight || 380;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
@@ -47,19 +44,19 @@ export const ThreePhotoStage: React.FC<ThreePhotoStageProps> = ({ photoUrl }) =>
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.3;
+    renderer.toneMappingExposure = 1.35;
     container.appendChild(renderer.domElement);
 
     // Studio Lighting
-    const ambientLight = new THREE.AmbientLight(0x8e1b52, 1.6);
+    const ambientLight = new THREE.AmbientLight(0x7f1d1d, 1.8);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff7fb, 2.5);
-    keyLight.position.set(3, 4, 3);
+    const keyLight = new THREE.DirectionalLight(0xfff5f5, 3.0);
+    keyLight.position.set(3.5, 4.5, 3);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0xf6a4c8, 2.2);
-    rimLight.position.set(-3, -2, 2);
+    const rimLight = new THREE.DirectionalLight(0xff1e46, 2.5);
+    rimLight.position.set(-3, -2, 2.5);
     scene.add(rimLight);
 
     // Frame Group
@@ -67,24 +64,24 @@ export const ThreePhotoStage: React.FC<ThreePhotoStageProps> = ({ photoUrl }) =>
     scene.add(frameGroup);
     frameGroupRef.current = frameGroup;
 
-    // Outer Luxury 3D Beveled Rose-Gold Frame
+    // Outer Luxury 3D Beveled Ruby-Red & Gold Frame
     const frameGeo = new THREE.BoxGeometry(2.35, 2.35, 0.08);
     const frameMat = new THREE.MeshStandardMaterial({
-      color: 0xd4387d,
+      color: 0xdc2626,
       metalness: 0.88,
       roughness: 0.18,
-      emissive: 0x6b103c,
-      emissiveIntensity: 0.2,
+      emissive: 0x7f1d1d,
+      emissiveIntensity: 0.28,
     });
     const frameMesh = new THREE.Mesh(frameGeo, frameMat);
     frameMesh.position.z = -0.04;
     frameGroup.add(frameMesh);
 
-    // Inner Dark Matting
+    // Inner Obsidian Black Matting
     const mattingGeo = new THREE.PlaneGeometry(2.25, 2.25);
     const mattingMat = new THREE.MeshStandardMaterial({
-      color: 0x0e0b12,
-      roughness: 0.3,
+      color: 0x08060a,
+      roughness: 0.25,
     });
     const mattingMesh = new THREE.Mesh(mattingGeo, mattingMat);
     mattingMesh.position.z = 0.005;
@@ -108,41 +105,35 @@ export const ThreePhotoStage: React.FC<ThreePhotoStageProps> = ({ photoUrl }) =>
           cb(tex);
         },
         undefined,
-        () => {
-          // Fallback if network blocked
-          console.warn('Fallback texture loaded');
-        }
+        () => console.warn('Texture load fallback')
       );
     };
 
-    // Default Material
     const photoMat = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       roughness: 0.25,
-      metalness: 0.1,
+      metalness: 0.05,
     });
 
     const photoMesh = new THREE.Mesh(photoGeo, photoMat);
     photoMesh.position.z = 0.01;
     frameGroup.add(photoMesh);
-    meshRef.current = photoMesh;
 
-    // Load initial texture
     loadTexture(photoUrl, (tex) => {
       photoMat.map = tex;
       photoMat.needsUpdate = true;
     });
 
-    // Glass Specular Coat Plane (Gives genuine 3D glass gloss)
+    // Glass Specular Coat Plane (Realistic 3D gloss)
     const glassGeo = new THREE.PlaneGeometry(2.2, 2.2);
     const glassMat = new THREE.MeshPhysicalMaterial({
       color: 0xffffff,
       transparent: true,
-      opacity: 0.15,
-      roughness: 0.05,
+      opacity: 0.16,
+      roughness: 0.04,
       metalness: 0.2,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.05,
+      clearcoatRoughness: 0.04,
     });
     const glassMesh = new THREE.Mesh(glassGeo, glassMat);
     glassMesh.position.z = 0.03;
@@ -162,7 +153,6 @@ export const ThreePhotoStage: React.FC<ThreePhotoStageProps> = ({ photoUrl }) =>
     window.addEventListener('mousemove', onPointerMove);
     window.addEventListener('touchmove', onPointerMove, { passive: true });
 
-    // Animation Loop
     let animId: number;
     let clock = new THREE.Clock();
 
@@ -170,8 +160,7 @@ export const ThreePhotoStage: React.FC<ThreePhotoStageProps> = ({ photoUrl }) =>
       animId = requestAnimationFrame(animate);
       const time = clock.getElapsedTime();
 
-      // Fluid 3D Tilt based on mouse/touch
-      const targetRotY = mousePos.current.x * 0.22;
+      const targetRotY = mousePos.current.x * 0.24;
       const targetRotX = -mousePos.current.y * 0.18;
 
       if (!isTransitioning.current) {
@@ -190,7 +179,7 @@ export const ThreePhotoStage: React.FC<ThreePhotoStageProps> = ({ photoUrl }) =>
       const w = container.clientWidth;
       const h = container.clientHeight;
       camera.aspect = w / h;
-      camera.updateProjectionMatrix;
+      camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
 
@@ -208,7 +197,6 @@ export const ThreePhotoStage: React.FC<ThreePhotoStageProps> = ({ photoUrl }) =>
     };
   }, [photoUrl]);
 
-  // 3D Card Flip Transition on Slide Switch
   const trigger3DTransition = (newIdx: number) => {
     if (isTransitioning.current || !frameGroupRef.current) return;
     isTransitioning.current = true;
@@ -254,16 +242,16 @@ export const ThreePhotoStage: React.FC<ThreePhotoStageProps> = ({ photoUrl }) =>
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* 3D WebGL Canvas Stage */}
-      <div className="relative w-full aspect-square max-w-[340px] xs:max-w-[380px] sm:max-w-[420px] rounded-3xl overflow-hidden cursor-grab active:cursor-grabbing shadow-[0_25px_60px_rgba(142,27,82,0.4)] flex items-center justify-center">
+      <div className="relative w-full aspect-square max-w-[340px] xs:max-w-[380px] sm:max-w-[420px] rounded-3xl overflow-hidden cursor-grab active:cursor-grabbing shadow-[0_25px_60px_rgba(220,38,38,0.35)] flex items-center justify-center">
         <div ref={mountRef} className="w-full h-full relative z-10" />
 
-        {/* Ambient Halo Behind 3D Stage */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-[#E1458E]/20 rounded-full blur-3xl pointer-events-none" />
+        {/* Ambient Ruby Halo */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-[#ef4444]/25 rounded-full blur-3xl pointer-events-none" />
 
         {/* Navigation Arrows */}
         <button
           onClick={handlePrev}
-          className="absolute left-3 top-1/2 -translate-y-1/2 z-30 p-2.5 rounded-full glass-clean-pill text-[#F6A4C8] hover:text-white hover:bg-[#8E1B52]/60 transition-all border border-[#F6A4C8]/30 active:scale-90 cursor-pointer shadow-xl"
+          className="absolute left-3 top-1/2 -translate-y-1/2 z-30 p-2.5 rounded-full glass-obsidian-pill text-[#ef4444] hover:text-white hover:bg-[#dc2626]/60 transition-all border border-[#ef4444]/40 active:scale-90 cursor-pointer shadow-2xl"
           aria-label="Foto anterior"
         >
           <ChevronLeft className="w-4 h-4" />
@@ -271,29 +259,29 @@ export const ThreePhotoStage: React.FC<ThreePhotoStageProps> = ({ photoUrl }) =>
 
         <button
           onClick={handleNext}
-          className="absolute right-3 top-1/2 -translate-y-1/2 z-30 p-2.5 rounded-full glass-clean-pill text-[#F6A4C8] hover:text-white hover:bg-[#8E1B52]/60 transition-all border border-[#F6A4C8]/30 active:scale-90 cursor-pointer shadow-xl"
+          className="absolute right-3 top-1/2 -translate-y-1/2 z-30 p-2.5 rounded-full glass-obsidian-pill text-[#ef4444] hover:text-white hover:bg-[#dc2626]/60 transition-all border border-[#ef4444]/40 active:scale-90 cursor-pointer shadow-2xl"
           aria-label="Próxima foto"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
 
-        {/* 3D Indicator Pill */}
-        <div className="absolute top-3.5 right-3.5 z-20 glass-clean-pill px-3 py-0.5 rounded-full text-[10px] font-mono tracking-widest text-[#F6A4C8] border border-[#F6A4C8]/20 flex items-center gap-1">
-          <Sparkles className="w-2.5 h-2.5 text-[#F6A4C8]" />
-          <span>3D STAGE · 0{slideIdx + 1} / 0{CAROUSEL_SLIDES.length}</span>
+        {/* 3D Stage Indicator */}
+        <div className="absolute top-3.5 right-3.5 z-20 glass-obsidian-pill px-3 py-0.5 rounded-full text-[10px] font-mono tracking-widest text-[#ef4444] border border-[#ef4444]/30 flex items-center gap-1 shadow-lg">
+          <Sparkles className="w-2.5 h-2.5 text-[#ef4444]" />
+          <span>GALERIA 3D · 0{slideIdx + 1} / 0{CAROUSEL_SLIDES.length}</span>
         </div>
       </div>
 
-      {/* Discrete Progress Indicator */}
+      {/* Progress Dots */}
       <div className="mt-4 flex items-center gap-2 py-1">
-        {CAROUSEL_SLIDES.map((slide, idx) => (
+        {CAROUSEL_SLIDES.map((slide: CarouselSlide, idx: number) => (
           <button
             key={slide.id}
             onClick={() => trigger3DTransition(idx)}
             className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
               idx === slideIdx
-                ? 'w-7 bg-gradient-to-r from-[#F6A4C8] to-[#FFF7FB] shadow-[0_0_10px_rgba(246,164,200,0.85)]'
-                : 'w-2 bg-[#8E1B52]/50 hover:bg-[#F6A4C8]/60'
+                ? 'w-7 bg-gradient-to-r from-[#ef4444] to-[#ffffff] shadow-[0_0_12px_rgba(239,68,68,0.9)]'
+                : 'w-2 bg-[#7f1d1d]/60 hover:bg-[#ef4444]/70'
             }`}
             title={`Slide ${idx + 1}`}
             aria-label={`Ver slide ${idx + 1}`}
@@ -301,17 +289,17 @@ export const ThreePhotoStage: React.FC<ThreePhotoStageProps> = ({ photoUrl }) =>
         ))}
       </div>
 
-      {/* Accompanying Dedicated Emotional Quote */}
+      {/* Emotional Quote for this slide */}
       <div className="mt-4 text-center max-w-sm px-4 animate-in fade-in duration-500">
-        <p className="font-poetic italic text-xl sm:text-2xl text-[#FFF7FB] leading-relaxed tracking-wide drop-shadow-sm">
+        <p className="font-poetic italic text-xl sm:text-2xl text-[#FFF5F5] leading-relaxed tracking-wide drop-shadow">
           “{currentSlide.quote}”
         </p>
         <div className="mt-2.5 flex items-center justify-center gap-2">
-          <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-[#F6A4C8]/50" />
-          <span className="text-[11px] text-[#F6A4C8] font-luxury tracking-widest uppercase">
+          <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-[#ef4444]/60" />
+          <span className="text-[11px] text-[#ef4444] font-luxury tracking-widest uppercase">
             {currentSlide.title}
           </span>
-          <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-[#F6A4C8]/50" />
+          <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-[#ef4444]/60" />
         </div>
       </div>
     </div>

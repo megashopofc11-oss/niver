@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { CAROUSEL_SLIDES } from '../data/defaultExperience';
+import { CAROUSEL_SLIDES, CarouselSlide } from '../data/defaultExperience';
 import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 
 interface CleanAutoCarouselProps {
@@ -53,8 +53,8 @@ export const CleanAutoCarousel: React.FC<CleanAutoCarouselProps> = ({ photoUrl }
             src={activeImage}
             alt="Aniversariante"
             referrerPolicy="no-referrer"
-            className={`w-full h-full object-cover transition-all duration-1000 ease-out animate-in fade-in zoom-in-95 ${currentSlide.styling.zoomClass} ${currentSlide.styling.filterClass}`}
-            style={{ objectPosition: currentSlide.styling.objectPosition }}
+            className={`w-full h-full object-cover transition-all duration-1000 ease-out animate-in fade-in zoom-in-95 ${currentSlide.styling?.zoomClass || 'scale-100'} ${currentSlide.styling?.filterClass || ''}`}
+            style={{ objectPosition: currentSlide.styling?.objectPosition || 'center 20%' }}
           />
         </div>
 
@@ -86,7 +86,7 @@ export const CleanAutoCarousel: React.FC<CleanAutoCarouselProps> = ({ photoUrl }
 
       {/* Discrete Progress Indicator Dots */}
       <div className="mt-4 flex items-center gap-1.5 py-1">
-        {CAROUSEL_SLIDES.map((slide, idx) => (
+        {CAROUSEL_SLIDES.map((slide: CarouselSlide, idx: number) => (
           <button
             key={slide.id}
             onClick={() => setCurrentIndex(idx)}

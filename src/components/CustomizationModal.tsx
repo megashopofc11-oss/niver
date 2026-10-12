@@ -70,8 +70,9 @@ export const CustomizationModal: React.FC<CustomizationModalProps> = ({
 
   const handleResetDefaults = () => {
     if (window.confirm('Deseja restaurar as configurações e fotos originais da modelo?')) {
-      setFormData(DEFAULT_CONFIG);
-      onSaveConfig(DEFAULT_CONFIG);
+      const resetConfig = { ...formData, ...DEFAULT_CONFIG } as ExperienceConfig;
+      setFormData(resetConfig);
+      onSaveConfig(resetConfig);
     }
   };
 

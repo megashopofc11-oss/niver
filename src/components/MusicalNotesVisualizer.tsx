@@ -19,7 +19,7 @@ interface NoteParticle {
 }
 
 const NOTE_SYMBOLS = ['♪', '♫', '♩', '✦'];
-const ROSE_PALETTE = ['#FFF7FB', '#F6A4C8', '#E1458E'];
+const RUBY_GOLD_PALETTE = ['#FF1744', '#EF4444', '#F59E0B', '#FEF08A'];
 
 export const MusicalNotesVisualizer: React.FC<MusicalNotesVisualizerProps> = ({ isPlaying }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -61,7 +61,7 @@ export const MusicalNotesVisualizer: React.FC<MusicalNotesVisualizerProps> = ({ 
         opacity: 0,
         fadeSpeed: 0.008,
         symbol: NOTE_SYMBOLS[Math.floor(Math.random() * NOTE_SYMBOLS.length)],
-        color: ROSE_PALETTE[Math.floor(Math.random() * ROSE_PALETTE.length)],
+        color: RUBY_GOLD_PALETTE[Math.floor(Math.random() * RUBY_GOLD_PALETTE.length)],
       });
     };
 
@@ -98,10 +98,10 @@ export const MusicalNotesVisualizer: React.FC<MusicalNotesVisualizerProps> = ({ 
         ctx.translate(currentX, p.y);
         ctx.globalAlpha = Math.max(0, p.opacity);
 
-        ctx.shadowColor = 'rgba(246, 164, 200, 0.6)';
-        ctx.shadowBlur = 8;
+        ctx.shadowColor = 'rgba(239, 68, 68, 0.75)';
+        ctx.shadowBlur = 10;
         ctx.fillStyle = p.color;
-        ctx.font = `${p.size}px "Playfair Display", Georgia, serif`;
+        ctx.font = `${p.size}px "Cinzel", "Playfair Display", Georgia, serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(p.symbol, 0, 0);
