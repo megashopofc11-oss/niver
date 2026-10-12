@@ -1,0 +1,6 @@
+{
+  "name": "Surpresa de Aniversário 3D",
+  "description": "Experiência cinematográfica 3D interativa de aniversário com presente animado, telemensagem, galeria em fragmentos e efeitos visuais premium.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
