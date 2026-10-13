@@ -2,26 +2,30 @@
 
 @layer base {
   body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
     background-color: #030204;
-    color: #FFF5F5;
+    color: #FFFFFF;
     overflow-x: hidden;
   }
 
   .font-royal {
-    font-family: 'Cinzel Decorative', 'Cinzel', Georgia, serif;
-  }
-
-  .font-cinzel {
-    font-family: 'Cinzel', Georgia, serif;
+    font-family: 'Playfair Display', Georgia, serif;
   }
 
   h1, h2, h3, .font-luxury {
-    font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .font-sans-clean {
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .font-script {
+    font-family: 'Dancing Script', cursive;
   }
 
   .font-poetic {
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: 'Playfair Display', Georgia, serif;
   }
 }
 
@@ -36,12 +40,12 @@
 
 @keyframes pulse-ruby-glow {
   0%, 100% {
-    opacity: 0.6;
-    filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.45));
+    opacity: 0.8;
+    filter: drop-shadow(0 0 15px rgba(255, 23, 68, 0.7));
   }
   50% {
     opacity: 1;
-    filter: drop-shadow(0 0 35px rgba(255, 23, 68, 0.9));
+    filter: drop-shadow(0 0 35px rgba(255, 0, 85, 1));
   }
 }
 
@@ -68,67 +72,81 @@
 }
 
 .animate-pulse-ruby {
-  animation: pulse-ruby-glow 3s ease-in-out infinite;
+  animation: pulse-ruby-glow 2.5s ease-in-out infinite;
 }
 
+/* Brilliant, Crisp Glowing Typography */
 .text-shimmer-ruby {
   background: linear-gradient(
     90deg,
     #FFFFFF 0%,
-    #FECACA 25%,
-    #EF4444 50%,
-    #FF1744 75%,
+    #FFE4E6 20%,
+    #FF1744 45%,
+    #FF0055 70%,
     #FFFFFF 100%
   );
   background-size: 200% auto;
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
-  animation: shimmer-ruby 4.5s linear infinite;
+  animation: shimmer-ruby 3.5s linear infinite;
+  filter: drop-shadow(0 0 25px rgba(255, 23, 68, 0.65));
 }
 
 .text-shimmer-gold {
   background: linear-gradient(
     90deg,
-    #FDE047 0%,
-    #F59E0B 30%,
-    #FFFFFF 50%,
-    #D97706 70%,
-    #FDE047 100%
+    #FFFFFF 0%,
+    #FEF08A 25%,
+    #F59E0B 50%,
+    #FBBF24 75%,
+    #FFFFFF 100%
   );
   background-size: 200% auto;
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
-  animation: shimmer-gold 5s linear infinite;
+  animation: shimmer-gold 4s linear infinite;
+  filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.6));
+}
+
+.text-glow-white {
+  color: #FFFFFF;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.7), 0 0 40px rgba(255, 23, 68, 0.4);
+}
+
+.text-glow-ruby {
+  color: #FFFFFF;
+  text-shadow: 0 0 15px rgba(255, 23, 68, 0.9), 0 0 35px rgba(255, 0, 85, 0.75);
 }
 
 /* Luxury Obsidian & Brilliant Red Glassmorphism */
 .glass-obsidian-card {
   background: linear-gradient(
     145deg,
-    rgba(220, 38, 38, 0.12) 0%,
-    rgba(10, 5, 8, 0.94) 50%,
-    rgba(153, 27, 27, 0.16) 100%
+    rgba(220, 38, 38, 0.18) 0%,
+    rgba(14, 6, 10, 0.96) 50%,
+    rgba(185, 28, 28, 0.2) 100%
   );
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(239, 68, 68, 0.35);
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 35px rgba(220, 38, 38, 0.22);
+  border: 1.5px solid rgba(255, 23, 68, 0.45);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.95), 0 0 40px rgba(255, 23, 68, 0.3);
 }
 
 .glass-obsidian-pill {
-  background: rgba(15, 8, 12, 0.88);
+  background: rgba(18, 7, 12, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(239, 68, 68, 0.4);
+  border: 1px solid rgba(255, 23, 68, 0.5);
+  box-shadow: 0 0 20px rgba(255, 23, 68, 0.25);
 }
 
 .ruby-radial-bg {
   background-color: #030204;
   background-image: 
-    radial-gradient(ellipse 90% 60% at 50% 12%, rgba(220, 38, 38, 0.26) 0%, transparent 65%),
-    radial-gradient(ellipse 80% 50% at 50% 85%, rgba(185, 28, 28, 0.18) 0%, transparent 60%);
+    radial-gradient(ellipse 90% 60% at 50% 10%, rgba(255, 23, 68, 0.28) 0%, transparent 65%),
+    radial-gradient(ellipse 80% 50% at 50% 85%, rgba(220, 38, 38, 0.22) 0%, transparent 60%);
 }
 
 .perspective-1000 {

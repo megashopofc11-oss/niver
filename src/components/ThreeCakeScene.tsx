@@ -1,11 +1,37 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import confetti from 'canvas-confetti';
+import { Sparkles, Flame, RotateCcw } from 'lucide-react';
 
 export const ThreeCakeScene: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
   const previousMousePos = useRef({ x: 0, y: 0 });
   const rotationTarget = useRef({ x: 0.15, y: 0 });
+
+  const [isBlownOut, setIsBlownOut] = useState(false);
+  const [wishGranted, setWishGranted] = useState(false);
+  const blownOutRef = useRef(false);
+
+  useEffect(() => {
+    blownOutRef.current = isBlownOut;
+  }, [isBlownOut]);
+
+  const handleBlowCandles = () => {
+    setIsBlownOut(true);
+    setWishGranted(true);
+    confetti({
+      particleCount: 50,
+      spread: 75,
+      origin: { y: 0.7 },
+      colors: ['#FF1744', '#DC2626', '#F59E0B', '#FFFFFF'],
+    });
+  };
+
+  const handleRelightCandles = () => {
+    setIsBlownOut(false);
+    setWishGranted(false);
+  };
 
   useEffect(() => {
     const container = mountRef.current;
@@ -234,10 +260,17 @@ export const ThreeCakeScene: React.FC = () => {
       cakeGroup.rotation.y += (rotationTarget.current.y - cakeGroup.rotation.y) * 0.08;
       cakeGroup.rotation.x += (rotationTarget.current.x - cakeGroup.rotation.x) * 0.08;
 
+      const isOut = blownOutRef.current;
+
       flames.forEach((flame, idx) => {
-        const flicker = Math.sin(time * 12 + idx * 2.5) * 0.08;
-        flame.scale.set(1 + flicker, 1 + flicker * 1.5, 1 + flicker);
-        flameLights[idx].intensity = 1.8 + Math.sin(time * 15 + idx) * 0.4;
+        if (isOut) {
+          flame.scale.set(0, 0, 0);
+          flameLights[idx].intensity = 0;
+        } else {
+          const flicker = Math.sin(time * 12 + idx * 2.5) * 0.08;
+          flame.scale.set(1 + flicker, 1 + flicker * 1.5, 1 + flicker);
+          flameLights[idx].intensity = 1.8 + Math.sin(time * 15 + idx) * 0.4;
+        }
       });
 
       b1.position.y = 1.3 + Math.sin(time * 1.8) * 0.08;
@@ -279,9 +312,44 @@ export const ThreeCakeScene: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative w-full max-w-[380px] sm:max-w-[450px] h-[340px] sm:h-[380px] mx-auto cursor-grab active:cursor-grabbing select-none flex items-center justify-center">
-      <div ref={mountRef} className="w-full h-full relative z-10" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-[#ef4444]/20 rounded-full blur-3xl pointer-events-none" />
+    <div className="w-full flex flex-col items-center select-none">
+      {/* 3D WebGL Canvas */}
+      <div className="relative w-full max-w-[380px] sm:max-w-[450px] h-[320px] sm:h-[370px] mx-auto cursor-grab active:cursor-grabbing flex items-center justify-center">
+        <div ref={mountRef} className="w-full h-full relative z-10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-[#ef4444]/20 rounded-full blur-3xl pointer-events-none" />
+      </div>
+
+      {/* Interactive Candle Blow Out Action */}
+      <div className="mt-4 flex flex-col items-center gap-3">
+        {!isBlownOut ? (
+          <button
+            onClick={handleBlowCandles}
+            className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-gradient-to-r from-[#DC2626] via-[#FF1744] to-[#DC2626] text-white font-sans-clean font-bold text-sm sm:text-base shadow-[0_0_30px_rgba(255,23,68,0.6)] hover:shadow-[0_0_45px_rgba(255,23,68,0.9)] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer border border-[#FEF08A]/50"
+          >
+            <Flame className="w-4 h-4 text-[#FEF08A] animate-bounce" />
+            <span>Fazer um pedido e apagar as velas 🎂</span>
+            <Sparkles className="w-4 h-4 text-[#FEF08A]" />
+          </button>
+        ) : (
+          <div className="flex flex-col items-center gap-2.5 animate-in fade-in zoom-in-95 duration-500">
+            <div className="glass-obsidian-card px-6 py-3 rounded-2xl border border-[#F59E0B]/50 shadow-[0_0_30px_rgba(245,158,11,0.4)] text-center">
+              <p className="font-royal font-bold text-base sm:text-lg text-shimmer-gold">
+                ✨ Seu pedido foi lançado ao universo! ✨
+              </p>
+              <p className="text-xs sm:text-sm text-red-100 font-sans-clean font-medium pt-1">
+                Que todos os seus sonhos se tornem uma linda realidade.
+              </p>
+            </div>
+            <button
+              onClick={handleRelightCandles}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-obsidian-pill text-xs text-red-200 hover:text-white transition-all cursor-pointer border border-red-500/40"
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-[#F59E0B]" />
+              <span>Reacender as velas</span>
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
